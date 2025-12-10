@@ -164,7 +164,7 @@ class plot_function:
             cls._current_axis.legend()
         return line
         
-        
+
     @classmethod
     def polar(cls, *args, **kwargs):
         """
@@ -332,11 +332,8 @@ class plot_function:
 
 class plot3_function:
     """
-    -------------------------------
-    MATLAB-style 3D plotting interface
-    -------------------------------
+    MATLAB-style 3D plotting interface with robust format/kwarg handling.
     """
-    # 继承 plot_function 的状态管理变量 (或使用独立的)
     _current_figure = None
     _current_axis = None
     _figure_count = 0
@@ -344,10 +341,7 @@ class plot3_function:
 
     @classmethod
     def figure3(cls, num=None):
-        """
-        创建或激活一个带有 3D 投影的 Figure，并确保当前 Axes 是 3D Axes。
-        """
-        # 1. 激活或创建 Figure
+        """Create or activate a 3D figure."""
         if num is not None:
             plt.figure(num)
         else:
@@ -355,44 +349,45 @@ class plot3_function:
             plt.figure(cls._figure_count)
 
         fig = plt.gcf()
-        
-        # 2. 检查 Axes。如果 Figure 是新创建的或者当前 Axes不是3D，则强制创建3D Axes。
         ax = fig.gca()
-        
         is_3d_axes = isinstance(ax, Axes3D)
         
-        # 如果 Axes 不存在 (Figure 是空的)，或者 Axes 存在但不是 3D (例如，之前是 2D 图)
         if not fig.axes or not is_3d_axes:
-            # 清除 Figure 中所有 Axes (防止之前的 2D Axes 干扰)
-            fig.clf() 
-            # 创建新的 3D Axes 并设置为当前 Axes
+            fig.clf()
             ax = fig.add_subplot(111, projection='3d')
 
-        # 3. 更新类状态和设置
         cls._current_figure = fig
         cls._current_axis = ax
-        
-        # 确保网格设置
         cls._current_axis.grid(True, alpha=0.3)
-        
-        # 激活 hold off
-        cls._hold_state = False 
+        #cls._hold_state = False this is why there always a blank figure when calling figure3
         return cls._current_figure
 
     @classmethod
     def _ensure_3d_axis(cls, force_new=False):
-        """确保当前 Axes 存在且为 3D 投影。"""
+        """Ensure current axis exists and is 3D projection."""
         current_is_3d = isinstance(cls._current_axis, Axes3D) if cls._current_axis else False
         
-        # 如果 hold off，或者没有 Axes，或者当前 Axes 不是 3D
-        if force_new or (not cls._hold_state) or (cls._current_figure is None) or (not current_is_3d):
-            cls.figure3(num=None if not cls._hold_state else cls._figure_count)
+        # 简化条件：什么时候需要创建一个新的 Figure/Axes？
+        # 1. 强制新建 (force_new)
+        # 2. hold off (not cls._hold_state)
+        # 3. 当前 Axes 不存在 或 存在但不是 3D
+        needs_new_axes = force_new or (not cls._hold_state) or (cls._current_axis is None) or (not current_is_3d)
+
+        if needs_new_axes:
+            # 如果 hold off，创建新 Figure；如果 hold on 但 Axes 无效，激活当前 Figure。
+            # 由于 figure3 内部有 clf() 逻辑，我们始终调用它，但要确保它激活正确的 Figure。
+            
+            # 如果是 hold on 状态下 Axes 丢失，我们激活当前的 Figure 编号，否则就创建一个新的。
+            fig_num = cls._current_figure.number if cls._hold_state and cls._current_figure else None
+            
+            # figure3 负责确保创建的 Axes 是 3D 的，并设置 cls._current_axis
+            cls.figure3(num=fig_num) 
         
         return cls._current_axis
     
     @classmethod
     def hold(cls, state=None):
-        # 沿用 plot_function 的 hold 逻辑
+        """Toggle or set hold state for 3D plots."""
         if state is None:
             cls._hold_state = not cls._hold_state
         else:
@@ -405,101 +400,208 @@ class plot3_function:
             print("Hold: off - subsequent 3D plots will create new 3D figures")
         return cls._hold_state
 
-    # ---------------- 3D 曲线图 ----------------
     @classmethod
-    def plot3(cls, x, y, z, fmt='-', label=None, **kwargs):
-        """MATLAB-style plot3(x, y, z, 'fmt')"""
+    def _parse_format_3d(cls, fmt):
+        """
+        Parse MATLAB-style format string for 3D plots.
+        Returns (color, marker, linestyle) — same as 2D _parse_format.
+        """
+        if fmt is None or fmt == '':
+            return None, None, 'solid'
+        fmt = str(fmt)
+
+        colors = {'b':'blue','g':'green','r':'red','c':'cyan','m':'magenta','y':'yellow','k':'black','w':'white'}
+        markers = {'.':'.','o':'o','x':'x','+':'+','*':'*','s':'s','d':'d','^':'^','v':'v','<':'<','>':'>'}
+        linestyles = {'--':'dashed','-.':'dashdot',':':'dotted','-':'solid'}
+
+        color = None
+        marker = None
+        linestyle = None
+
+        # match multi-char linestyles first
+        for key in sorted(linestyles.keys(), key=len, reverse=True):
+            if key in fmt:
+                linestyle = linestyles[key]
+                fmt = fmt.replace(key, '', 1)
+                break
+
+        # match color (single char)
+        for ch in fmt:
+            if ch in colors:
+                color = colors[ch]
+                fmt = fmt.replace(ch, '', 1)
+                break
+
+        # match marker (single char)
+        for ch in fmt:
+            if ch in markers:
+                marker = markers[ch]
+                fmt = fmt.replace(ch, '', 1)
+                break
+
+        # marker-only means no connecting line
+        if (marker is not None) and (linestyle is None):
+            linestyle = 'None'
+
+        # fallback default: solid line
+        if (linestyle is None) and (marker is None):
+            linestyle = 'solid'
+
+        return color, marker, linestyle
+
+    @classmethod
+    def plot3(cls, x, y, z, fmt='-', label=None, linewidth=1.5, **kwargs):
+        """
+        MATLAB-style plot3(x, y, z, 'fmt', label=..., linewidth=..., **kwargs).
+        Supports format strings like 'r--o', with robust alias handling.
+        """
         ax = cls._ensure_3d_axis()
 
-        # Matplotlib 3D plot 不支持 fmt 字符串，需要手动解析
-        # 简化处理：暂时只支持 color, linestyle, marker，其他交给 kwargs
-        color = None
-        linestyle = '-'
-        marker = None
+        # Record which aliases were provided by user
+        orig_keys = set(kwargs.keys())
+        color_provided = ('color' in orig_keys) or ('c' in orig_keys)
+        ls_provided = ('linestyle' in orig_keys) or ('ls' in orig_keys)
+        marker_provided = 'marker' in orig_keys
 
-        if fmt and isinstance(fmt, str):
-            # 简单的 fmt 解析（需定制或使用 plot_function._parse_format 导入）
-            # 假设使用你 plot_function 中的 _parse_format 方法解析 (如果可用)
-            # 这里简单硬编码，若需完整解析，需导入或复制 _parse_format
-            if '-' in fmt: linestyle = '-'
-            if 'o' in fmt: marker = 'o'
-            if 'r' in fmt: color = 'r'
-        
-        plot_kwargs = {'color': color, 'linestyle': linestyle, 'marker': marker, 'label': label}
-        plot_kwargs = {k: v for k, v in plot_kwargs.items() if v is not None}
+        # Pop alias values to avoid duplicates
+        user_color = kwargs.pop('color', None) if 'color' in orig_keys else (kwargs.pop('c', None) if 'c' in orig_keys else None)
+        user_linestyle = kwargs.pop('linestyle', None) if 'linestyle' in orig_keys else (kwargs.pop('ls', None) if 'ls' in orig_keys else None)
+        user_marker = kwargs.pop('marker', None) if 'marker' in orig_keys else None
+
+        # Parse format string
+        parsed_color, parsed_marker, parsed_linestyle = cls._parse_format_3d(fmt)
+
+        # Decide final attributes: user-specified (even None) wins; otherwise parsed fmt
+        final_color = user_color if color_provided else parsed_color
+        if ls_provided:
+            final_linestyle = 'None' if user_linestyle is None else user_linestyle
+        else:
+            final_linestyle = user_linestyle if user_linestyle is not None else parsed_linestyle
+        final_marker = user_marker if marker_provided else parsed_marker
+
+        # Build kwargs to pass to matplotlib — only include keys that are not None
+        plot_kwargs = {}
+        if final_color is not None:
+            plot_kwargs['color'] = final_color
+        if final_linestyle is not None:
+            plot_kwargs['linestyle'] = final_linestyle
+        if final_marker is not None:
+            plot_kwargs['marker'] = final_marker
+        plot_kwargs['linewidth'] = linewidth
+        if label:
+            plot_kwargs['label'] = label
+
+        # any remaining kwargs are safe to merge
         plot_kwargs.update(kwargs)
 
+        # Call matplotlib 3D plot
         line = ax.plot(x, y, z, **plot_kwargs)
+        
+        ax.grid(True, alpha=0.3)
         if label:
             ax.legend()
         return line
 
-    # ---------------- 3D 曲面图 ----------------
     @classmethod
-    def surf(cls, X, Y, Z, cmap=cm.viridis, **kwargs):
-        """MATLAB-style surf(X, Y, Z)"""
+    def surf(cls, X, Y, Z, fmt=None, cmap=cm.viridis, label=None, **kwargs):
+        """
+        MATLAB-style surf(X, Y, Z, cmap=..., **kwargs).
+        fmt parameter reserved for future use (currently ignored for surface).
+        """
         ax = cls._ensure_3d_axis()
+
+        # For surf, we mainly use cmap and other surface-specific kwargs
+        # Pop common style aliases if provided (though less relevant for surface)
+        kwargs.pop('color', None)
+        kwargs.pop('c', None)
+        kwargs.pop('linestyle', None)
+        kwargs.pop('ls', None)
+        kwargs.pop('marker', None)
+
+        # Build surf kwargs
+        surf_kwargs = {'cmap': cmap}
+        surf_kwargs.update(kwargs)
+
+        surface = ax.plot_surface(X, Y, Z, **surf_kwargs)
         
-        # plot_surface 是 Matplotlib 的原生方法
-        surface = ax.plot_surface(X, Y, Z, cmap=cmap, **kwargs)
+        if label:
+            # Surface doesn't support label in legend, but store as title or annotation
+            ax.set_title(label)
         
-        # 返回 surface 对象以便用户添加 colorbar
+        ax.grid(True, alpha=0.3)
         return surface
 
-    # ---------------- 3D 网格图 ----------------
     @classmethod
-    def mesh(cls, X, Y, Z, color='blue', **kwargs):
-        """MATLAB-style mesh(X, Y, Z)"""
+    def mesh(cls, X, Y, Z, fmt=None, color='blue', label=None, **kwargs):
+        """
+        MATLAB-style mesh(X, Y, Z, color=..., **kwargs).
+        fmt parameter reserved for future use (currently ignored for wireframe).
+        """
         ax = cls._ensure_3d_axis()
 
-        # plot_wireframe 是 Matplotlib 的原生方法
-        mesh = ax.plot_wireframe(X, Y, Z, color=color, **kwargs)
-        return mesh
+        # For mesh, pop format-related aliases (less relevant but for consistency)
+        kwargs.pop('c', None)
+        kwargs.pop('linestyle', None)
+        kwargs.pop('ls', None)
+        kwargs.pop('marker', None)
 
-    # ---------------- 轴标签和标题 ----------------
+        # Build mesh kwargs
+        mesh_kwargs = {'color': color}
+        mesh_kwargs.update(kwargs)
+
+        mesh_obj = ax.plot_wireframe(X, Y, Z, **mesh_kwargs)
+        
+        if label:
+            ax.set_title(label)
+        
+        ax.grid(True, alpha=0.3)
+        return mesh_obj
+
     @classmethod
     def zlabel(cls, text):
-        """Set z-axis label"""
+        """Set z-axis label."""
         ax = cls._ensure_3d_axis()
         ax.set_zlabel(text)
     
     @classmethod
     def xlabel(cls, text):
-        """Set x-axis label"""
+        """Set x-axis label."""
         ax = cls._ensure_3d_axis()
         ax.set_xlabel(text)
     
     @classmethod
     def ylabel(cls, text):
-        """Set y-axis label"""
+        """Set y-axis label."""
         ax = cls._ensure_3d_axis()
         ax.set_ylabel(text)
 
     @classmethod
     def title(cls, text):
-        """Set plot title"""
+        """Set plot title."""
         ax = cls._ensure_3d_axis()
         ax.set_title(text)
 
     @classmethod
     def grid(cls, state=True):
-        """Turn grid on/off"""
+        """Turn grid on/off."""
         if cls._current_axis:
             cls._current_axis.grid(state, alpha=0.3)
             
-    # ---------------- 其他通用功能 ----------------
     @classmethod
     def show(cls, block=True):
+        """Show all 3D figures."""
         plt.show(block=block)
     
     @classmethod
     def close(cls, num='all'):
+        """Close 3D figure(s)."""
         if num == 'all':
             plt.close('all')
             cls._current_figure = None
             cls._current_axis = None
         else:
             plt.close(num)
+# ...existing code...
 
 
 
