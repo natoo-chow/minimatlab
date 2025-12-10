@@ -64,10 +64,10 @@ class plot_function:
                 print(f"warning: non-exsistent coordinate '{coord_system}', use current coordinate : {cls._current_coord_system}")
         
         # 移除此处的 figure 创建逻辑，避免创建空白 Figure, 解决了空白figure的bug
-        # Figure 的创建将完全交给 plot() 函数。
+        # Figure 的创建将完全交给 plot() 函数
+        # 在进行接下来的3D绘图时遇到了相似的bug，应该也移除类似的逻辑
         # if cls._current_figure is not None and not cls._hold_state:
         #     cls._create_appropriate_figure() 
-        
         # print _current_coordinate_system:
         status_msg = "on" if cls._current_coord_system == 'polar' else "off"
         print(f"Polar: {status_msg} - subsequent plots will use {cls._current_coord_system} coordinate system")
@@ -81,26 +81,28 @@ class plot_function:
         
         if cls._current_coord_system == 'polar':
             # 修复：使用 plt.subplot(polar=True) 替代 plt.polar()
+            # subplot is more robust and returns the axis object directly
+            # in the following '_setup_polar_axes' we will set axes returned by this function.
             plt.subplot(111, polar=True)
         # else: default cartesian axis is created by plt.gca() below
         
         cls._current_figure = plt.gcf()
         cls._current_axis = plt.gca()
         cls._current_axis.grid(True, alpha=0.3)
-        
+
+                
     @classmethod
     def _setup_polar_axes(cls):
-        """设置极坐标轴的参数"""
+        '''for advanced subtle adjustion user can change E to W, 1 to -1 etc, if needed'''
         if cls._current_coord_system == 'polar' and cls._current_axis is not None:
             # 设置theta零点在x正方向（右侧）
-            cls._current_axis.set_theta_zero_location('E')  # E代表East，即x正方向
+            cls._current_axis.set_theta_zero_location('E')  # Eest
             # 设置theta方向为逆时针（数学标准）
             cls._current_axis.set_theta_direction(-1)  # -1表示逆时针
 
     @classmethod
-    def plot(cls, x, y=None, fmt='-', label=None, linewidth=1.5, **kwargs):
-        """Plot data. If only one arg provided, treat it as y and use x=range(len(y))."""
-        # The coordinate would be automatically set properly
+    def plot(cls, x, y=None, fmt='-', label=None, linewidth=1.5, **kwargs): # ** means dictionary, we will use the keys in the following code
+        # Plot data. If only one arg provided, treat it as y and use x=range(len(y)). This is a shortcut for constant functions, similar to matlab
         if y is None:
             y = x
             x = np.arange(len(y))
@@ -119,7 +121,7 @@ class plot_function:
         ls_provided = ('linestyle' in orig_keys) or ('ls' in orig_keys)
         marker_provided = 'marker' in orig_keys
 
-        # Pop alias values (if any) to avoid passing duplicates later
+        # Pop alias values (if any) to avoid passing duplicates later.This is a major bug I fixed(by vibe coding), the code can't run otherwise.
         user_color = kwargs.pop('color', None) if 'color' in orig_keys else (kwargs.pop('c', None) if 'c' in orig_keys else None)
         user_linestyle = kwargs.pop('linestyle', None) if 'linestyle' in orig_keys else (kwargs.pop('ls', None) if 'ls' in orig_keys else None)
         user_marker = kwargs.pop('marker', None) if 'marker' in orig_keys else None
@@ -133,10 +135,6 @@ class plot_function:
         else:
             final_linestyle = user_linestyle if user_linestyle is not None else parsed_linestyle
         final_marker = user_marker if marker_provided else parsed_marker
-
-        # 移除第二个 figure 检查块 (冗余且有 bug)
-        # if (not cls._hold_state) or (cls._current_figure is None):
-        #     cls.figure()
 
         # Build kwargs to pass to matplotlib — only include keys that are not None
         plot_kwargs = {}
@@ -165,6 +163,7 @@ class plot_function:
         if label:
             cls._current_axis.legend()
         return line
+        
         
     @classmethod
     def polar(cls, *args, **kwargs):
