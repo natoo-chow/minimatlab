@@ -3,6 +3,18 @@ Minimatlab is a simplified version of matlab, with function calls almost as the 
 We aim to make this project useful for us student, helping us learn maths， physics and of course CS.
 The developers of this programme are new to python, so please be tolerant of the bugs of the programme.
 
+# setup
+create a setup.py in the root
+copy and paste the following code:
+from setuptools import setup, find_packages
+
+setup(
+    name="minimatlab",
+    version="1.0.0",
+    author="Nathan",
+    packages=find_packages(),
+)
+
 # usage
 
 Mini-MATLAB 绘图库使用教程
