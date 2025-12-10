@@ -51,3 +51,20 @@ figure3(3)
 mesh(X, Y, Z, color='black') # 绘制网格图
 title('3D Wireframe Plot (mesh)')
 show()
+
+
+# 3D line plot with format string
+x = linspace(0, 10, 100)
+y = sin(x)
+z = cos(x)
+plot3(x, y, z, 'b-o', label='3D curve')
+show()
+
+# 3D surface
+X = linspace(-5, 5, 50)
+Y = linspace(-5, 5, 50)
+[X, Y] = np.meshgrid(X, Y)
+Z = X**2 + Y**2
+figure3()
+surf(X, Y, Z)
+show()
