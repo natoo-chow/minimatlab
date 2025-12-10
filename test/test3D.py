@@ -1,7 +1,8 @@
 from minimatlab import *
 import numpy as np
 from matplotlib import cm
-from minimatlab.plot_package import plot3_function
+from minimatlab.plot_package import plot3_function 
+# Now the queation is why the fuck should I import ploy_package again after I had written import *? what the ******* 12.10.20.30
 # 示例 1: 3D 曲线图 (plot3)
 close('all') # 关闭所有 Figure
 

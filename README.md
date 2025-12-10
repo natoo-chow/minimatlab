@@ -4,7 +4,7 @@ We aim to make this project useful for us student, helping us learn maths， phy
 The developers of this programme are new to python, so please be tolerant of the bugs of the programme.
 
 # setup
-create a setup.py in the root
+create a setup.py in the same root of minimatlab
 copy and paste the following code:
 from setuptools import setup, find_packages
 
@@ -15,6 +15,15 @@ setup(
     packages=find_packages(),
 )
 
+
+check whether your file name is straight minimatlab, if it is minimatlab-master it's because you directly copy the code. Change it into minimatlab
+
+in the terminal enter pip install -e (editing mode)
+
+
+if something went wrong first check the path of your pip and python, ask ai for help.
+
+我发现jgj的电脑在安装python的时候装的是一坨屎。还有一堆莫名其妙的bug，不报错，也不能运行，真是神奇了个大鬼了
 # usage
 
 Mini-MATLAB 绘图库使用教程
