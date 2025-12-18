@@ -3,26 +3,29 @@ Minimatlab is a simplified version of matlab, with function calls almost as the 
 We aim to make this project useful for us student, helping us learn maths， physics and of course CS.
 The developers of this programme are new to python, so please be tolerant of the bugs of the programme.
 
-# setup
+# setup How to install ?
 create a setup.py in the same root of minimatlab
 copy and paste the following code:
+```python
 from setuptools import setup, find_packages
-
 setup(
     name="minimatlab",
     version="1.0.0",
     author="Nathan",
     packages=find_packages(),
 )
-
-
+```
+after that in the terminal type:
+```bash
+cd minimatlab
+pip -e install 
+```
+-e means editing mode. If you want to make adjustments in this project, just do whatever you want!
 check whether your file name is straight minimatlab, if it is minimatlab-master it's because you directly copy the code. Change it into minimatlab
-
-in the terminal enter pip install -e (editing mode)
-
 
 if something went wrong first check the path of your pip and python, ask ai for help.
 
+Note:
 我发现jgj的电脑在安装python的时候装的是一坨屎。还有一堆莫名其妙的bug，不报错，也不能运行，真是神奇了个大鬼了
 # usage
 
