@@ -371,7 +371,7 @@ class plot3_function:
         # 1. 强制新建 (force_new)
         # 2. hold off (not cls._hold_state)
         # 3. 当前 Axes 不存在 或 存在但不是 3D
-        needs_new_axes = force_new or (not cls._hold_state) or (cls._current_axis is None) or (not current_is_3d)
+        needs_new_axes = force_new or (cls._current_axis is None) or (not current_is_3d)
 
         if needs_new_axes:
             # 如果 hold off，创建新 Figure；如果 hold on 但 Axes 无效，激活当前 Figure。
@@ -404,7 +404,7 @@ class plot3_function:
     def _parse_format_3d(cls, fmt):
         """
         Parse MATLAB-style format string for 3D plots.
-        Returns (color, marker, linestyle) — same as 2D _parse_format.
+        Returns (color, marker, linestyle) — same logic as 2D _parse_format.
         """
         if fmt is None or fmt == '':
             return None, None, 'solid'
@@ -659,7 +659,7 @@ sqrt = np.sqrt
 min = np.min
 mean = np.mean
 max = np.max
-
+meshgrid = np.meshgrid
 #同时注释多行：ctrl+/
 
 

@@ -3,7 +3,7 @@ Minimatlab is a simplified version of matlab, with function calls almost as the 
 We aim to make this project useful for us student, helping us learn maths， physics and of course CS.
 The developers of this programme are new to python, so please be tolerant of the bugs of the programme.
 
-# setup How to install ?
+# Setup: How to install ?
 create a setup.py in the same root of minimatlab
 copy and paste the following code:
 ```python
@@ -23,280 +23,176 @@ pip -e install
 -e means editing mode. If you want to make adjustments in this project, just do whatever you want!
 check whether your file name is straight minimatlab, if it is minimatlab-master it's because you directly copy the code. Change it into minimatlab
 
-if something went wrong first check the path of your pip and python, ask ai for help.
+if something else goes wrong, ask ai for help.
 
-Note:
-我发现jgj的电脑在安装python的时候装的是一坨屎。还有一堆莫名其妙的bug，不报错，也不能运行，真是神奇了个大鬼了
-# usage
+# usage 1 Mini-MATLAB 
 
-Mini-MATLAB 绘图库使用教程
+This guide is going to lead you through the basic usage of plot_package, which is a powerful tool for function plotting.
 
-本教程将指导你如何使用 plot_package 模块。该模块封装了 Python 的 Matplotlib，使其语法和行为（如 hold on/off，格式字符串 'r--' 等）高度模仿 MATLAB。
+0. cheat sheet
+| Category   | Function                  | Example Usage                              |
+| :--------- | :------------------------ | :----------------------------------------- |
+| Control    | figure(), figure3()       | figure(1), figure3()                       |
+|            | hold()                    | hold('on'), hold('off')                    |
+|            | subplot()                 | subplot(2, 1, 1)                           |
+| 2D Plot    | plot()                    | plot(x, y, 'r--o', label='Data')           |
+|            | switch()                  | switch('polar') (Toggles polar mode)       |
+|            | polar()                   | polar(theta, r, 'g-')                      |
+| 3D Plot    | plot3()                   | plot3(x, y, z, 'b-', linewidth=2)          |
+|            | surf()                    | surf(X, Y, Z, cmap=cm.plasma)              |
+|            | mesh()                    | mesh(X, Y, Z, color='red')                 |
+| Labels     | title(), xlabel(), ylabel() | title('My Plot'), xlabel('Time')           |
+|            | zlabel()                  | zlabel('Height') (3D only)                 |
+| Math       | pi, sin, cos, exp, linspace | x = linspace(0, 2*pi, 100)                 |
+| Display    | grid(), legend(), show()  | grid(True), legend(), show()               |
 
-0. 准备工作
+1. Let's start!
 
-假设你已经将提供的代码保存为 plot_package.py。
-在你的主脚本中，你需要引入所有内容：
+first import our package 
+```python
+from minimatlab import *
+```
+In this way we can directly use whatever function calls shown above in the cheat sheet.
 
-code
-Python
-download
-content_copy
-expand_less
-# 推荐这样引入，可以直接使用 sin, cos, pi 等变量，完全模拟 MATLAB 环境
-from plot_package import *
-1. 基础 2D 绘图 (Cartesian)
+2. create figure
 
-最基本的绘图功能，支持 MATLAB 风格的简写格式字符串。
+The `plot` function mimics MATLAB's syntax, including the ability to pass a single argument (interpreted as Y-values) and shorthand format strings.
 
-code
-Python
-download
-content_copy
-expand_less
-# 准备数据 (使用库内集成的 numpy 函数)
-x = linspace(0, 2*pi, 100)
+```python
+x = linspace(0, 10, 100)
 y = sin(x)
 
-# 1. 创建图形并绘图
-figure(1)           # 创建或激活 Figure 1
-plot(x, y, 'r--')   # 红色虚线
-title('Sine Wave')
+figure(1)
+plot(x, y, 'b-', label='Sine')
+title('Harmonic Motion')
 xlabel('Time (s)')
 ylabel('Amplitude')
-grid(True)          # 打开网格
-
-show()              # 显示图像
-
-支持的格式字符串 (fmt):
-
-颜色: r (红), g (绿), b (蓝), k (黑), w (白), y (黄), m (洋红), c (青)
-
-线型: - (实线), -- (虚线), -. (点划线), : (点线)
-
-标记: o (圆点), * (星号), . (点), x (叉号), s (方块) 等
-
-示例: plot(x, y, 'bo-') (蓝色实线带圆点标记)
-
-2. Hold 机制 (叠加绘图)
-
-这是该库的核心功能之一，模拟了 MATLAB 的状态机绘图模式。
-
-code
-Python
-download
-content_copy
-expand_less
-x = linspace(0, 10, 100)
-y1 = sin(x)
-y2 = cos(x)
-
-figure(2)
-
-# 绘制第一条线
-plot(x, y1, 'b-', label='Sin', linewidth=2) 
-
-# 开启 Hold on，之后的绘图将叠加在当前坐标轴上
-hold('on') 
-
-# 绘制第二条线
-plot(x, y2, 'r--', label='Cos')
-
-legend() # 显示图例
-title('Hold On Demo')
-
-# 养成好习惯，画完后关闭 hold，以免影响后续绘图
-hold('off') 
-
+grid(True)
+legend()
 show()
-3. 极坐标绘图 (Polar)
+```
+*Note*: Do not forget to use `show()` at the end to display the plot.
 
-该库提供了两种方式进行极坐标绘图：状态切换法和直接调用法。
+3. The hold() Machanism
+Every time you type `hold()`,you change the hold stage of the working environment just like matlab.The default value is "False"
+When hold is "on", you'll be able to layer multiple plots on the same canvas(or "axes")
+When hold is "False", the next plot will be in a different window.
+You can use `hold('True')` or `hold('on')` to specifically manage the hold state.
 
-方法 A：使用 switch 切换坐标系 (推荐)
+4. About switch()
+Similarly as `hold()`,`switch()`manages the current coordinate that you're working on.The default value is "cartesian"
+Every time you type `switch()`,you change the coordinate system of the working environment.
+When switch is "polar",you can use `polar()` to plot polar functions.
+When switch is "cartesian",you can use `plot()` to plot cartesian functions.
+You can use `switch('polar')` or `switch('cartesian')` to specifically manage the coordinate system.
 
-这种方式更像状态机，适合连续画多张极坐标图。
+5. subplot() function
+The `subplot()` function allows you to create multiple plots in a single figure.subplot(m, n, p) divides the figure into an m-by-n grid and creates axes in the position specified by p. 
+'p' means left to right, top to bottom the p th plot.
 
-expand_less
-theta = linspace(0, 2*pi, 100)
-r = 1 - sin(theta)  # 心形线
+6. Figure()
+Handle multiple figures using the `figure()` function is recommanded when you want to create a lot of plots in one file.
+Even if you don't use `figure()`, the package will automatically create figures for you, but using `figure()` gives you more control over which figure you're working on.
+not specify working figure would cause some issues sometimes.
 
-# 切换到极坐标模式
-switch('polar') 
+7. 3D Plotting
+In this part, there're some advanced features inherited from matplotlib for 3D plotting. We have to import `cm` from `matplotlib` for colormaps and some other functionalities you may need.
+To create 3D plots, you can use the `plot3()`, `surf()`, and `mesh()` functions. Here's an example of a 3D surface plot:
+```python
+# Example 1: 3D curve (plot3)
+close('all') # Close all figure (not necessary)
 
-figure(3)
-plot(theta, r, 'm-', linewidth=2)
-title('Cardioid (Polar Switch)')
-
-# 记得切换回直角坐标系，否则后续 plot 都会是极坐标
-switch('cartesian') 
-
-show()
-方法 B：使用 polar 函数
-
-直接在极坐标下绘图。
-
-theta = linspace(0, 4*pi, 200)
-r = theta 
-
-figure(4)
-polar(theta, r, 'g--')
-title('Spiral (Direct Polar Function)')
-show()
-4. 3D 绘图
-
-该库封装了 Axes3D，并通过 figure3 自动管理 3D 上下文。
-
-3D 曲线 (plot3)
-code
-Python
-download
-content_copy
-expand_less
-# 生成 3D 螺旋线数据
-t = linspace(0, 20, 200)
+figure3(1) # Create a 3D figure
+t = linspace(0, 10 * pi, 500)
 x = sin(t)
 y = cos(t)
 z = t
+plot3(x, y, z, 'r-', linewidth=2, label='Helix') # Draw 3D helix(螺旋线)
 
-# 使用 figure3 强制初始化 3D 环境
-figure3(5) 
+hold('on')# Add a second 3D curve on the same figure
 
-plot3(x, y, z, 'r-', linewidth=1)
-title('3D Helix')
-zlabel('Height')
+plot3(x * 0.5, y * 0.5, z, 'b--', linewidth=1)
+
+title('3D Helix Plot')
+xlabel('X-axis')
+ylabel('Y-axis')
+zlabel('Z-axis (Time)')
 show()
-3D 曲面 (surf) 与 网格 (mesh)
-code
-Python
-download
-content_copy
-expand_less
-# 生成网格数据
+
+
+# Example 2: 3D surf(曲面图) 和 mesh (网格图)
+close('all')
+
+figure3(2)
 X = linspace(-5, 5, 50)
 Y = linspace(-5, 5, 50)
-X, Y = np.meshgrid(X, Y) # 这里的 np 需要保证你导入了 numpy 或者使用库里的别名
+X, Y = meshgrid(X, Y)
 R = sqrt(X**2 + Y**2)
-Z = sin(R)
+Z = sin(R) / R # Mexican hat function
 
-figure3(6)
-# 绘制曲面
-surf(X, Y, Z, cmap=cm.coolwarm) 
-title('Sinc Function Surface')
+# surf 绘制曲面图 
+s = surf(X, Y, Z, cmap=cm.coolwarm, alpha=0.7) # return Surface object
+title('3D Surface Plot (surf)')
+zlabel('Z')
 
-figure3(7)
-# 绘制网格
-mesh(X, Y, Z, color='b')
-title('Sinc Function Mesh')
-
+# Advanced function: Use the returned surface object to add colorbar
+fig = figure3(2) # get current Figure
+fig.colorbar(s, shrink=0.5, aspect=5)
 show()
-5. 子图 (Subplot)
 
-支持标准的行列索引方式。
+# Example 3: 3D Wireframe Plot (mesh)
+close('all')
 
-code
-Python
-download
-content_copy
-expand_less
-x = linspace(0, 10, 100)
-
-figure(8)
-
-# 左上角
-subplot(2, 2, 1)
-plot(x, sin(x), 'r')
-title('Subplot 1')
-
-# 右上角
-subplot(2, 2, 2)
-plot(x, cos(x), 'b')
-title('Subplot 2')
-
-# 左下角 (演示在 subplot 中使用极坐标)
-switch('polar') # 切换状态
-subplot(2, 2, 3) # 这个 subplot 会变成极坐标
-theta = linspace(0, 2*pi, 50)
-plot(theta, np.ones_like(theta), 'g-')
-switch('cartesian') # 切回来
-
-# 右下角
-subplot(2, 2, 4)
-plot(x, tan(x), 'k')
-axis_limit = [-10, 10] # 注意：库里没封装 ylim，这里仅演示
-plt.ylim(-5, 5) # 混合使用 matplotlib 原生命令也是可以的
-title('Subplot 4')
-
+figure3(3)
+mesh(X, Y, Z, color='black') 
+title('3D Wireframe Plot (mesh)')
 show()
-6. 内置数学工具
 
-为了让体验更像 MATLAB，代码底部封装了常用的 Numpy 函数。你可以直接使用：
 
-pi
-
-sin, cos, tan
-
-exp, log (自然对数), log10
-
-sqrt
-
-linspace
-
-min, max, mean
-
-示例:
-
-y = exp(-0.5 * linspace(0, 10, 100)) * sin(2 * pi * linspace(0, 10, 100))
-7. 综合示例：蒙特卡洛圆周率模拟
-
-这是一个将上述功能结合在一起的完整脚本示例。
-
-from plot_package import *
-import numpy as np # 用于生成随机数
-
-# 1. 准备数据
-N = 1000
-x = np.random.rand(N)
-y = np.random.rand(N)
-d = sqrt(x**2 + y**2)
-
-inside_idx = d <= 1
-x_in, y_in = x[inside_idx], y[inside_idx]
-x_out, y_out = x[~inside_idx], y[~inside_idx]
-
-# 2. 开始绘图
-figure(10)
-hold('on') # 开启叠加模式
-
-# 画圆弧 (1/4圆)
-theta = linspace(0, pi/2, 100)
-plot(cos(theta), sin(theta), 'k-', linewidth=2, label='Circle Boundary')
-
-# 画点
-plot(x_in, y_in, 'b.', label='Inside')
-plot(x_out, y_out, 'r.', label='Outside')
-
-# 装饰
-title(f'Monte Carlo PI Simulation (N={N})')
-xlabel('X')
-ylabel('Y')
-legend()
-grid(True)
-axis_equal = plt.axis('equal') # 调用 matplotlib 原生命令让比例尺一致
-
+# 3D line plot with format string
 hold('off')
+figure3(4)
+x = linspace(0, 10, 100)
+y = sin(x)
+z = cos(x)
+plot3(x, y, z, 'b-o', label='3D curve')
+title('3D Line Plot with Format String')
 show()
-总结
 
-figure(n) / figure3(n): 控制窗口。
+# 3D surface
+X = linspace(-5, 5, 50)
+Y = linspace(-5, 5, 50)
+[X, Y] = meshgrid(X, Y)
+Z = X**2 + Y**2
+figure3(5)
+surf(X, Y, Z)
+show()
+```
 
-hold('on'/'off'): 控制是否覆盖。
+8. Decoration 
+You can use `title()`, `xlabel()`, `ylabel()`, and `zlabel()` to add titles and axis labels to your plots. The `grid()` function adds a grid to the plot for better readability, and `legend()` displays the legend for labeled plots.
+Following format of line is supported in 2D and 3D plot:
+| Type         | Symbol                          | Description                  |
+| :----------- | :------------------------------ | :--------------------------- |
+| **Colors**   | b                               | blue（蓝色）                 |
+|              | g                               | green（绿色）                |
+|              | r                               | red（红色）                  |
+|              | c                               | cyan（青色）                 |
+|              | m                               | magenta（品红）              |
+|              | y                               | yellow（黄色）               |
+|              | k                               | black（黑色）                |
+|              | w                               | white（白色）                |
+| **Markers**  | .                               | point（点）                  |
+|              | o                               | circle（圆形）               |
+|              | x                               | x-mark（叉号）               |
+|              | +                               | plus（加号）                 |
+|              | *                               | star（星号）                 |
+|              | s                               | square（正方形）             |
+|              | d                               | diamond（菱形）              |
+|              | ^                               | triangle（三角形，向上）     |
+| **Line Styles** | -                              | solid（实线）                |
+|              | --                              | dashed（虚线）               |
+|              | -.                              | dash-dot（点划线）           |
+|              | :                               | dotted（点线）               |
 
-plot(..., 'fmt'): 核心绘图，支持字符串样式。
 
-switch('polar'): 开启极坐标模式。
-
-show(): 记得最后调用这个来显示窗口。
-
-
-    
