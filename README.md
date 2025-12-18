@@ -35,7 +35,7 @@ if something else goes wrong, ask ai for help.
 
 # usage 1 Mini-MATLAB 
 
-This guide is going to lead you through the basic usage of plot_package, which is a powerful tool for function plotting.
+This guide is going to lead you through the basic usage of plot_package, which is a powerful tool for function plotting. Note that if you put your mouse on the function name, you can see its docstring for more information.
 
 0. cheat sheet
 | Category   | Function                  | Example Usage                              |
@@ -53,7 +53,6 @@ This guide is going to lead you through the basic usage of plot_package, which i
 |            | zlabel()                  | zlabel('Height') (3D only)                 |
 | Math       | pi, sin, cos, exp, linspace | x = linspace(0, 2*pi, 100)                 |
 | Display    | grid(), legend(), show()  | grid(True), legend(), show()               |
-
 1. Let's start!
 
 first import our package 
@@ -180,6 +179,7 @@ show()
 8. Decoration 
 You can use `title()`, `xlabel()`, `ylabel()`, and `zlabel()` to add titles and axis labels to your plots. The `grid()` function adds a grid to the plot for better readability, and `legend()` displays the legend for labeled plots.
 Following format of line is supported in 2D and 3D plot:
+```markdown
 | Type         | Symbol                          | Description                  |
 | :----------- | :------------------------------ | :--------------------------- |
 | **Colors**   | b                               | blue（蓝色）                 |
@@ -202,5 +202,4 @@ Following format of line is supported in 2D and 3D plot:
 |              | --                              | dashed（虚线）               |
 |              | -.                              | dash-dot（点划线）           |
 |              | :                               | dotted（点线）               |
-
-
+```
