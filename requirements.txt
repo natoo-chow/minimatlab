@@ -3,4 +3,6 @@ numpy
 math
 "有一个方法可以将这里多有列出的包一次性下载，但是我忘记了。下次打开时候记得查看>>>pip install -r requirements.txt"
 setuptools 
+pandas
+
 

@@ -369,7 +369,7 @@ class plot3_function:
         
         # 简化条件：什么时候需要创建一个新的 Figure/Axes？
         # 1. 强制新建 (force_new)
-        # 2. hold off (not cls._hold_state)
+        # 2. hold off (not cls._hold_state) But here's the issue: what if I create figure by hand? So delete this condition
         # 3. 当前 Axes 不存在 或 存在但不是 3D
         needs_new_axes = force_new or (cls._current_axis is None) or (not current_is_3d)
 

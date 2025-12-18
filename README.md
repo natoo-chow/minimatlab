@@ -4,6 +4,13 @@ We aim to make this project useful for us student, helping us learn maths， phy
 The developers of this programme are new to python, so please be tolerant of the bugs of the programme.
 
 # Setup: How to install ?
+
+copy our project from github https://github.com/natoo-chow/minimatlab or ask me to send you the .zip
+In the terminal paste:
+```bash
+pip install -r requirements.txt
+```
+
 create a setup.py in the same root of minimatlab
 copy and paste the following code:
 ```python
@@ -15,6 +22,7 @@ setup(
     packages=find_packages(),
 )
 ```
+
 after that in the terminal type:
 ```bash
 cd minimatlab
