@@ -179,7 +179,7 @@ show()
 8. Decoration 
 You can use `title()`, `xlabel()`, `ylabel()`, and `zlabel()` to add titles and axis labels to your plots. The `grid()` function adds a grid to the plot for better readability, and `legend()` displays the legend for labeled plots.
 Following format of line is supported in 2D and 3D plot:
-```markdown
+
 | Type         | Symbol                          | Description                  |
 | :----------- | :------------------------------ | :--------------------------- |
 | **Colors**   | b                               | blue（蓝色）                 |
@@ -202,4 +202,3 @@ Following format of line is supported in 2D and 3D plot:
 |              | --                              | dashed（虚线）               |
 |              | -.                              | dash-dot（点划线）           |
 |              | :                               | dotted（点线）               |
-```
