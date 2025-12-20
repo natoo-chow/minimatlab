@@ -1,19 +1,18 @@
 # About Minimatlab 
-Minimatlab is a simplified version of matlab, with function calls almost as the same as matlab.
+Minimatlab is a simplified version of matlab, with function calls almost as the same as matlab (Maybe even more simplified).
 We aim to make this project useful for us student, helping us learn maths， physics and of course CS.
 The developers of this programme are new to python, so please be tolerant of the bugs of the programme.
 
 # Setup: How to install ?
 
-copy our project from github https://github.com/natoo-chow/minimatlab or ask me to send you the .zip
+Copy our project from github https://github.com/natoo-chow/minimatlab or ask me to send you the .zip
 
 In the terminal paste:
 ```bash
 pip install -r requirements.txt
 ```
 
-create a setup.py in the same root of minimatlab
-copy and paste the following code:
+Create a setup.py in the same root of minimatlab, copy and paste the following code:
 ```python
 from setuptools import setup, find_packages
 setup(
@@ -24,7 +23,7 @@ setup(
 )
 ```
 
-after that in the terminal type:
+After that in the terminal type:
 ```bash
 cd minimatlab
 pip -e install 
@@ -32,13 +31,13 @@ pip -e install
 -e means editing mode. If you want to make adjustments in this project, just do whatever you want!
 check whether your file name is straight minimatlab, if it is minimatlab-master it's because you directly copy the code. Change it into minimatlab
 
-if something else goes wrong, ask ai for help.
+If something else goes wrong, ask ai for help.
 
 # usage 1 Function Plotting with plot_package 
 
 This guide is going to lead you through the basic usage of plot_package, which is a powerful tool for function plotting. Note that if you put your mouse on the function name, you can see its docstring for more information.
 
-0. cheat sheet
+### 0. cheat sheet
 
 | Category   | Function                  | Example Usage                              |
 | :--------- | :------------------------ | :----------------------------------------- |
@@ -56,7 +55,7 @@ This guide is going to lead you through the basic usage of plot_package, which i
 | Math       | pi, sin, cos, exp, linspace | x = linspace(0, 2*pi, 100)                 |
 | Display    | grid(), legend(), show()  | grid(True), legend(), show()               |
 
-1. Let's start!
+### 1. Let's start!
 
 first import our package 
 ```python
@@ -64,7 +63,7 @@ from minimatlab import *
 ```
 In this way we can directly use whatever function calls shown above in the cheat sheet.
 
-2. create figure
+### 2. create figure
 
 The `plot` function mimics MATLAB's syntax, including the ability to pass a single argument (interpreted as Y-values) and shorthand format strings.
 
@@ -83,29 +82,29 @@ show()
 ```
 *Note*: Do not forget to use `show()` at the end to display the plot.
 
-3. The hold() Machanism
+### 3. The hold() Machanism
 Every time you type `hold()`,you change the hold stage of the working environment just like matlab.The default value is "False"
 When hold is "on", you'll be able to layer multiple plots on the same canvas(or "axes")
 When hold is "False", the next plot will be in a different window.
 You can use `hold('True')` or `hold('on')` to specifically manage the hold state.
 
-4. About switch()
+### 4. About switch()
 Similarly as `hold()`,`switch()`manages the current coordinate that you're working on.The default value is "cartesian"
 Every time you type `switch()`,you change the coordinate system of the working environment.
 When switch is "polar",you can use `polar()` to plot polar functions.
 When switch is "cartesian",you can use `plot()` to plot cartesian functions.
 You can use `switch('polar')` or `switch('cartesian')` to specifically manage the coordinate system.
 
-5. subplot() function
+### 5. subplot() function
 The `subplot()` function allows you to create multiple plots in a single figure.subplot(m, n, p) divides the figure into an m-by-n grid and creates axes in the position specified by p. 
 'p' means left to right, top to bottom the p th plot.
 
-6. Figure()
+### 6. Figure()
 Handle multiple figures using the `figure()` function is recommanded when you want to create a lot of plots in one file.
 Even if you don't use `figure()`, the package will automatically create figures for you, but using `figure()` gives you more control over which figure you're working on.
 not specify working figure would cause some issues sometimes.
 
-7. 3D Plotting
+### 7. 3D Plotting
 In this part, there're some advanced features inherited from matplotlib for 3D plotting. We have to import `cm` from `matplotlib` for colormaps and some other functionalities you may need.
 To create 3D plots, you can use the `plot3()`, `surf()`, and `mesh()` functions. Here's an example of a 3D surface plot:
 ```python
@@ -179,7 +178,7 @@ surf(X, Y, Z)
 show()
 ```
 
-8. Decoration 
+### 8. Decoration 
 You can use `title()`, `xlabel()`, `ylabel()`, and `zlabel()` to add titles and axis labels to your plots. The `grid()` function adds a grid to the plot for better readability, and `legend()` displays the legend for labeled plots.
 Following format of line is supported in 2D and 3D plot:
 
