@@ -6,6 +6,7 @@ The developers of this programme are new to python, so please be tolerant of the
 # Setup: How to install ?
 
 copy our project from github https://github.com/natoo-chow/minimatlab or ask me to send you the .zip
+
 In the terminal paste:
 ```bash
 pip install -r requirements.txt
@@ -33,7 +34,7 @@ check whether your file name is straight minimatlab, if it is minimatlab-master 
 
 if something else goes wrong, ask ai for help.
 
-# usage 1 Mini-MATLAB 
+# usage 1 Function Plotting with plot_package 
 
 This guide is going to lead you through the basic usage of plot_package, which is a powerful tool for function plotting. Note that if you put your mouse on the function name, you can see its docstring for more information.
 
@@ -202,3 +203,215 @@ Following format of line is supported in 2D and 3D plot:
 |              | --                              | dashed（虚线）               |
 |              | -.                              | dash-dot（点划线）           |
 |              | :                               | dotted（点线）               |
+
+# Usage 2 Numerical Computation with Num_cal
+This library provides three specialized tools for solving different types of mathematical problems, and all tools support the **Plot Mode** visualization feature.
+
+## I. Tool A: Root Finder (fsolve_all)
+### Function
+Solves equations (finds the intersection points between a mathematical curve and the x-axis, i.e., the roots of the equation)
+
+### Conceptual Analogy
+It works like a **"metal detector"** for mathematical graphs, scanning the curve to pinpoint where it touches the x-axis.
+
+### Required Parameters (3 Settings to Provide)
+1. **The Rule**: The mathematical formula to be solved (e.g., "x squared minus 4")
+2. **The Search Zone**: A specified range for the search (e.g., "look between -10 and 10"). The tool will not search outside this boundary.
+3. **The Step Size**: The precision level of the search. A smaller step size enables a more thorough search but takes longer; a larger step size is faster but may miss potential solutions.
+
+### Output Result
+Returns a **list of all solutions** found within the specified search zone.
+
+## II. Tool B: Area Calculator (integral)
+### Function
+Calculates definite integrals (computes the total area between a curved line and the coordinate axis below it)
+
+### Conceptual Analogy
+It acts as a **"slicer"**, measuring the total area enclosed between the curve and the underlying coordinate axis.
+
+### Required Parameters (4 Settings to Provide)
+1. **The Curve**: The mathematical formula representing the shape of the graph
+2. **Start Point**: The left boundary where the area measurement begins
+3. **End Point**: The right boundary where the area measurement ends
+4. **Slice Count**: The number of thin rectangular strips the shape is divided into for calculation (e.g., 1000). A higher number of slices results in a more accurate calculation.
+
+### Output Result
+Returns a **single numerical value** representing the total area.
+
+## III. Tool C: Future Predictor (RK4)
+### Function
+Solves differential equations (predicts the future trajectory of a system based on its change rules and initial state)
+
+### Conceptual Analogy
+It functions as a **"simulator"**. If you know the rules governing how an object moves or changes (such as gravity or cooling rate) and its initial state, this tool can predict its future path.
+
+### Required Parameters (4 Settings to Provide)
+1. **The Rule of Change**: A formula describing how the value changes over time (e.g., "Speed depends on Height and Time")
+2. **The Timeline**: The duration of the simulation (e.g., "from second 0 to second 5")
+3. **The Starting Position**: The initial value at the start time of the simulation
+4. **The Step Size**: The frequency at which the computer recalculates the position. A smaller step size (e.g., 0.01) generates a smoother, high-definition simulation trajectory.
+
+### Output Result
+Generates a complete trajectory dataset (a **list of time points and their corresponding values**).
+
+## IV. Visual Mode (Plot Mode)
+All the three tools above come with this special feature, which can be toggled using a boolean value (True/False).
+
+### Plot OFF (False)
+The tool runs silently in the background and only returns numerical results.
+
+### Plot ON (True)
+The tool will open a pop-up window to plot the results with the following effects:
+1. **Root Finder**: Plots the curve and marks the solution points with red dots
+2. **Area Calculator**: Fills the measured area with green dashed lines
+3. **Future Predictor**: Draws a red line showing the object's trajectory over time
+
+# Usage 3: Interactive Data Analysis Calculator
+This guide will walk you through the full functionality of the Interactive Data Analysis Calculator, a user-friendly tool for data loading, cleaning, processing, statistical analysis, and visualization.
+
+## 0. Cheat Sheet
+| Category               | Function                          | Example Usage                                  |
+| :--------------------- | :-------------------------------- | :--------------------------------------------- |
+| Data Loading           | load_data(file_path)              | load_data("data.xlsx"), load_data("data.csv")   |
+| Data Cleaning          | clean_data(df)                    | cleaned_df = clean_data(raw_df)                |
+| Column Operation       | add_custom_column(df)             | df = add_custom_column(df) (input formula: "col1+col2") |
+| Data Filtering         | filter_data_by_condition(df)      | filtered_df = df.query("col>10 and col2<50")    |
+| Basic Statistics       | calculate_statistics(df)          | stats_dict, corr_matrix = calculate_statistics(df) |
+| Hypothesis Testing     | hypothesis_test(df)               | t-test (col1 vs col2), chi2-test (cat1 vs cat2) |
+| Visualization          | visualize_data(df)                | Scatter/Histogram/Fitting Curve                 |
+| Data Display           | print(df.head())                  | Show first 5 rows of current data               |
+
+## 1. Let's Start!
+First, run the script directly. The program will launch an interactive interface—no additional import statements are required (dependencies are pre-included in the script).
+```python
+# Run the script in terminal or IDE
+python project.py
+```
+After running, you’ll see the welcome message: `📊 交互式数据分析计算器`
+
+## 2. Data Loading
+The tool supports **.xlsx** and **.csv** formats. Enter the full file path when prompted (relative path is supported if the file is in the same folder as the script):
+```
+请输入文件路径(data.xlsx): data.csv
+```
+- If the file format is unsupported, the program will prompt: `❌ 仅支持.xlsx或.csv格式`
+- If the file is missing or corrupted, it will show the error details: `❌ 加载失败：[error message]`
+
+## 3. Core Function Usage
+### 3.1 Automatic Data Cleaning
+Select function number `1` to delete all "Unnamed" columns (common redundant columns in Excel/CSV exports):
+```
+功能菜单：输入功能编号：1
+```
+- Result prompt: `✅ 已删除X个无用列` (X is the number of deleted columns)
+- The cleaned data will be printed automatically for verification.
+
+### 3.2 Add Custom Column
+Select function number `2` to add a new column using a custom formula (use existing column names for calculations):
+```
+功能菜单：输入功能编号：2
+请输入新列名：total_score
+请输入total_score的计算规则（如x+y、x*2等，用列名表示）：math+english+science
+```
+- Supported operators: `+` (addition), `-` (subtraction), `*` (multiplication), `/` (division), `**` (power), etc.
+- Result prompt: `✅ 已新增列：total_score` (the updated data will be printed)
+- Error prompt for invalid formulas: `❌ 公式错误：[error message]` (e.g., typos in column names)
+
+### 3.3 Filter Data by Condition
+Select function number `3` to filter data using logical conditions (supports `and`/`or`/`>`/`<`/`==` operators):
+```
+功能菜单：输入功能编号：3
+请输入筛选条件（如x>3 and y<5）：age>18 and income>5000
+```
+- Result prompt: `✅ 筛选出X行数据` (X is the number of filtered rows)
+- The first 5 rows of the filtered data will be printed (use `print(filtered_df)` to view all if needed).
+
+### 3.4 Calculate Basic Statistics
+Select function number `4` to compute key statistics for numeric columns and correlation matrix:
+```
+功能菜单：输入功能编号：4
+```
+- Output includes:
+  - Mean and variance for each numeric column: `📈 统计结果：- col1：均值XX.XXXX，方差XX.XXXX`
+  - Correlation matrix (rounded to 4 decimal places): `🔗 相关系数矩阵：[matrix table]`
+- Only numeric columns (int/float) are included in calculations (non-numeric columns are automatically skipped).
+
+### 3.5 Hypothesis Testing
+Select function number `5` to perform t-test (for numeric data) or chi-square test (for categorical data):
+#### Option 1: T-test (Compare two numeric columns)
+```
+功能菜单：输入功能编号：5
+请选择检验类型（1.t检验 2.卡方检验）：1
+输入第一列名：group_a_score
+输入第二列名：group_b_score
+```
+- Output: `t统计量：XX.XXXX，p值：XX.XXXX`
+- Conclusion: `拒绝原假设` (p<0.05, significant difference) or `接受原假设` (p≥0.05, no significant difference)
+
+#### Option 2: Chi-square Test (Check association between two categorical columns)
+```
+功能菜单：输入功能编号：5
+请选择检验类型（1.t检验 2.卡方检验）：2
+输入分类列1：gender
+输入分类列2：purchase_status
+```
+- Output: `卡方统计量：XX.XXXX，p值：XX.XXXX`
+- Conclusion: `拒绝原假设（存在关联）` (p<0.05) or `接受原假设（无关联）` (p≥0.05)
+
+### 3.6 Data Visualization
+Select function number `6` to generate 2D scatter plots, histograms, or fitting curves (supports 4 model types):
+#### Option 1: Scatter Plot (Show relationship between two numeric columns)
+```
+功能菜单：输入功能编号：6
+请选择图表类型（1.散点图 2.直方图 3.拟合曲线）：1
+输入X轴列名：study_hours
+输入Y轴列名：test_score
+```
+- The plot will automatically display with title, axis labels, and 60% transparent points.
+
+#### Option 2: Histogram (Show distribution of a single numeric column)
+```
+功能菜单：输入功能编号：6
+请选择图表类型（1.散点图 2.直方图 3.拟合曲线）：2
+输入列名：age
+```
+- Default settings: 10 bins, 70% transparency; the plot shows frequency distribution of the column.
+
+#### Option 3: Fitting Curve (Fit data with linear/quadratic/exponential/power models)
+```
+功能菜单：输入功能编号：6
+请选择图表类型（1.散点图 2.直方图 3.拟合曲线）：3
+输入X轴列名：advertising_cost
+输入Y轴列名：sales
+请选择拟合模型（1.线性 2.二次 3.指数 4.幂函数）：1
+```
+- Output: A plot with raw data points (scatter) and red fitting curve, plus R² value (shows goodness of fit, closer to 1 = better fit).
+
+### 3.7 Display Current Data
+Select function number `7` to preview the current data (first 5 rows by default):
+```
+功能菜单：输入功能编号：7
+```
+- Output: `当前数据预览:` + the first 5 rows of the current DataFrame.
+
+### 3.8 Exit Program
+Select function number `0` to exit the program:
+```
+功能菜单：输入功能编号：0
+```
+- Exit prompt: `👋 程序结束`
+
+## 4. Key Notes
+1. **Data Type Requirements**: Numeric columns (int/float) are required for statistics, t-test, and fitting; categorical columns (object/str) are required for chi-square test.
+2. **Formula Rules**: When adding columns or filtering, use exact existing column names (case-sensitive); avoid special characters.
+3. **Visualization**: Close the current plot window to return to the function menu and continue operations.
+4. **Error Handling**: If the input is invalid (e.g., wrong column name, illegal formula), the program will prompt an error and retain the original data state.
+
+## 5. Dependencies
+Ensure the following libraries are installed before running (run the command in terminal):
+```bash
+pip install pandas numpy matplotlib scipy openpyxl
+```
+- `openpyxl`: Required for reading .xlsx files; omit if only using .csv files.
+
+# Usage 4 : Matrix Operation with Matrix_module
