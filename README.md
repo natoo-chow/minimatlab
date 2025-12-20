@@ -270,6 +270,7 @@ The tool will open a pop-up window to plot the results with the following effect
 This guide will walk you through the full functionality of the Interactive Data Analysis Calculator, a user-friendly tool for data loading, cleaning, processing, statistical analysis, and visualization.
 
 ## 0. Cheat Sheet
+
 | Category               | Function                          | Example Usage                                  |
 | :--------------------- | :-------------------------------- | :--------------------------------------------- |
 | Data Loading           | load_data(file_path)              | load_data("data.xlsx"), load_data("data.csv")   |
