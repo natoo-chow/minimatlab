@@ -39,6 +39,7 @@ if something else goes wrong, ask ai for help.
 This guide is going to lead you through the basic usage of plot_package, which is a powerful tool for function plotting. Note that if you put your mouse on the function name, you can see its docstring for more information.
 
 0. cheat sheet
+
 | Category   | Function                  | Example Usage                              |
 | :--------- | :------------------------ | :----------------------------------------- |
 | Control    | figure(), figure3()       | figure(1), figure3()                       |
@@ -54,6 +55,7 @@ This guide is going to lead you through the basic usage of plot_package, which i
 |            | zlabel()                  | zlabel('Height') (3D only)                 |
 | Math       | pi, sin, cos, exp, linspace | x = linspace(0, 2*pi, 100)                 |
 | Display    | grid(), legend(), show()  | grid(True), legend(), show()               |
+
 1. Let's start!
 
 first import our package 
