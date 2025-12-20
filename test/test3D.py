@@ -1,9 +1,10 @@
 from minimatlab import *
 from matplotlib import cm
 # Now the question is why the fuck should I import plot3_function again after I had written import *? what the ******* 12.10.20.30
+# The above annoying problem has been fixed. It was due to silly issues (not saving the file after modifying it)
 # Example 1: 3D curve (plot3)
 close('all') # Close all figure (not necessary)
-
+# Note when plotting punch of figures, it is recommended to use 'figure(your figure number or name)' to specify what figure you're currently working on. figure3 is to create a 3D figure
 figure3(1) # Create a 3D figure
 t = linspace(0, 10 * pi, 500)
 x = sin(t)
@@ -33,13 +34,13 @@ R = sqrt(X**2 + Y**2)
 Z = sin(R) / R # Mexican hat function
 
 # surf 绘制曲面图 
-s = surf(X, Y, Z, cmap=cm.coolwarm, alpha=0.7) # return Surface object
+s = surf(X, Y, Z, cmap=cm.coolwarm, alpha=0.7) # return Surface object coolwarm:color alpha:transparency
 title('3D Surface Plot (surf)')
 zlabel('Z')
 
 # Advanced function: Use the returned surface object to add colorbar
-fig = figure3(2) # get current Figure
-fig.colorbar(s, shrink=0.5, aspect=5)
+# fig = figure3(2) # get current Figure
+# fig.colorbar(s, shrink=0.5, aspect=5)
 show()
 
 # Example 3: 3D Wireframe Plot (mesh)

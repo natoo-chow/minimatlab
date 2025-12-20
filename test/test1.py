@@ -23,12 +23,11 @@ title('subplot example 2')
 grid(True)
 legend(['y = sin(x)/2 + cos(x/2)', 'y = 2*x'])
 show()
-'''
-from minimatlab import *
+# 5 test polar plotting
+hold() # remember to remove hold state by remove() again or remove('off'). Otherwise switching to polar will cause issues.
 switch()
 x=linspace(-10,10,400)
-y=sin(x)/2 + cos(x/2)
-plot(x,y,'b-')
+y=x
+plot(x,y,'r-')
 title('single figure')
 show()
-'''

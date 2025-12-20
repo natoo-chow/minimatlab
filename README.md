@@ -7,7 +7,9 @@ The developers of this programme are new to python, so please be tolerant of the
 
 Copy our project from github https://github.com/natoo-chow/minimatlab or ask me to send you the .zip
 
-In the terminal paste:
+If you download the .zip, unzip it and open the folder minimatlab-master, rename it into minimatlab
+
+Then cd minimatlab, in the terminal paste:
 ```bash
 pip install -r requirements.txt
 ```
@@ -22,22 +24,28 @@ setup(
     packages=find_packages(),
 )
 ```
+Remember to save it!
+
+Exit the current folder and go back to the root folder where minimatlab is located by 
+```bash
+cd ..
+```
 
 After that in the terminal type:
 ```bash
-cd minimatlab
-pip -e install 
+pip install -e .
 ```
 -e means editing mode. If you want to make adjustments in this project, just do whatever you want!
-check whether your file name is straight minimatlab, if it is minimatlab-master it's because you directly copy the code. Change it into minimatlab
+
+When using, install any required package that is not installed yet.
 
 If something else goes wrong, ask ai for help.
 
-# usage 1 Function Plotting with plot_package 
+# Usage 1 Function Plotting with plot_package 
 
 This guide is going to lead you through the basic usage of plot_package, which is a powerful tool for function plotting. Note that if you put your mouse on the function name, you can see its docstring for more information.
 
-### 0. cheat sheet
+### 0. Cheat Sheet
 
 | Category   | Function                  | Example Usage                              |
 | :--------- | :------------------------ | :----------------------------------------- |
