@@ -1,8 +1,6 @@
-matplotlib
-numpy
-math
-"有一个方法可以将这里多有列出的包一次性下载，但是我忘记了。下次打开时候记得查看>>>pip install -r requirements.txt"
-setuptools 
-pandas
-
-
+matplotlib==3.10.8
+minimatlab==1.0.0
+minimatlab_project==1.0.0
+numpy==2.3.5
+pandas==2.3.3
+scipy==1.16.3
