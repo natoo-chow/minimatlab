@@ -105,9 +105,11 @@ Even if you don't use `figure()`, the package will automatically create figures 
 not specify working figure would cause some issues sometimes.
 
 ### 7. 3D Plotting
-In this part, there're some advanced features inherited from matplotlib for 3D plotting. We have to import `cm` from `matplotlib` for colormaps and some other functionalities you may need.
+In this part, there're some advanced features inherited from matplotlib for 3D plotting. We have to import `cm` from `matplotlib` for colormaps and some other functionalities we may need.
 To create 3D plots, you can use the `plot3()`, `surf()`, and `mesh()` functions. Here's an example of a 3D surface plot:
 ```python
+from minimatlab import *
+from matplotlib import cm
 # Example 1: 3D curve (plot3)
 close('all') # Close all figure (not necessary)
 
@@ -126,6 +128,7 @@ title('3D Helix Plot')
 xlabel('X-axis')
 ylabel('Y-axis')
 zlabel('Z-axis (Time)')
+legend()
 show()
 
 

@@ -28,7 +28,7 @@ close('all')
 figure3(2)
 X = linspace(-5, 5, 50)
 Y = linspace(-5, 5, 50)
-X, Y = meshgrid(X, Y)
+X, Y = meshgrid(X, Y) # Every possible combination of x, y values.
 R = sqrt(X**2 + Y**2)
 Z = sin(R) / R # Mexican hat function
 
