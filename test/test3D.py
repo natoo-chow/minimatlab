@@ -34,13 +34,10 @@ R = sqrt(X**2 + Y**2)
 Z = sin(R) / R # Mexican hat function
 
 # surf 绘制曲面图 
-s = surf(X, Y, Z, cmap=cm.coolwarm, alpha=0.7) # return Surface object coolwarm:color alpha:transparency
+s = surf(X, Y, Z, cmap=cm.coolwarm, alpha=0.7) # return Surface object. coolwarm:color alpha:transparency
 title('3D Surface Plot (surf)')
 zlabel('Z')
 
-# Advanced function: Use the returned surface object to add colorbar
-# fig = figure3(2) # get current Figure
-# fig.colorbar(s, shrink=0.5, aspect=5)
 show()
 
 # Example 3: 3D Wireframe Plot (mesh)
@@ -76,3 +73,23 @@ show()
 # V=linspace(0,1,500)
 # plot3(T, P, V, 'r-', linewidth=2, label='PV Diagram')
 # show()
+
+#Example of meshgrid
+'''
+x = np.array([1, 2, 3])  # 长度m=3
+y = np.array([4, 5])     # 长度n=2
+
+X, Y = np.meshgrid(x, y)
+
+print("X =", X)
+print("Y =", Y)
+
+Output:
+X = [[1 2 3]
+     [1 2 3]]  
+Y = [[4 4 4]
+     [5 5 5]]
+Z = X + Y
+Z = .....(every possible combination of X + Y)
+     
+'''

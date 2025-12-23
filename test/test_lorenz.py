@@ -29,7 +29,7 @@ def integrate_lorenz(y0, t0, t1, npts=10000):
         k4 = np.array(lorenz(t[i] + dt, y[i] + dt * k3))
         y[i+1] = y[i] + dt * (k1 + 2*k2 + 2*k3 + k4) / 6.0
     return t, y[:,0], y[:,1], y[:,2]
-
+# above is just math way to generate punch of (x,y,z) do this by researching online or ask ai, below is the very easy part you can write yourself.
 
 def main():
     y0 = [1.0, 1.0, 1.0]
@@ -42,11 +42,11 @@ def main():
     ylabel('y')
     zlabel('z')
     hold('on')
-    y1 = [0.0, 1.0, 1.05]
+    y1 = [1.0, 1.0, 1.05]
     t, X1, Y1, Z1 = integrate_lorenz(y1, 0.0, 50.0, npts=10000)
     plot3(X1, Y1, Z1, fmt='-', color='orange', linewidth=0.6)
     title('Lorenz attractor with different initial conditions')
     show()
-
+#the same as previous ones.
 if __name__ == '__main__':
     main()
