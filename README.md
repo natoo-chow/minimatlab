@@ -428,3 +428,147 @@ pip install pandas numpy matplotlib scipy openpyxl
 - `openpyxl`: Required for reading .xlsx files; omit if only using .csv files.
 
 # Usage 4 : Matrix Operation with Matrix_module
+
+This guide will lead you through the basic usage of the Simple Matrix Tool, a command-line utility for creating, storing, and performing operations on matrices using NumPy. It supports a variety of matrix manipulations, from basic arithmetic to advanced decompositions.
+
+0. Cheat Sheet
+
+| Category | Function/Menu Option | Example Usage |
+| :--------- | :------------------------ | :----------------------------------------- |
+| Matrix Creation | 1. Input matrix | Enter name (e.g., A), rows/cols, then row data |
+| | 2. Generate random matrix | Rows: 3, Cols: 3, Low: 0, High: 10 → Auto-labels as next (e.g., A) |
+| | 3. Generate identity matrix | Order n: 3 → Auto-labels, e.g., np.eye(3) |
+| | 4. Generate zero matrix | Rows: 2, Cols: 2 → Auto-labels, e.g., np.zeros((2,2)) |
+| | 5. Generate diagonal matrix | Diag elements: 1 2 3 → Auto-labels, e.g., np.diag([1,2,3]) |
+| Storage & View | 6. View all matrices | Displays all stored matrices with labels |
+| Basic Operations | 7. Matrix addition | First: A, Second: B → A + B (if shapes match) |
+| | 8. Matrix subtraction | Minuend: A, Subtrahend: B → A - B |
+| | 9. Matrix multiplication | Left: A, Right: B → A @ B (if compatible) |
+| | 10. Matrix transpose | Name: A → A.T |
+| Advanced Computations | 11. Matrix inverse | Name: A → np.linalg.inv(A) (square, invertible only) |
+| | 12. Compute determinant | Name: A → np.linalg.det(A) (rounded to 1 decimal) |
+| | 13. Compute matrix rank | Name: A → np.linalg.matrix_rank(A) |
+| | 14. Eigenvalues and eigenvectors | Name: A → np.linalg.eig(A) |
+| Decompositions | 15. LU decomposition | Name: A → Manual Doolittle (L, U matrices) |
+| | 16. QR decomposition | Name: A → Manual Gram-Schmidt (Q, R matrices) |
+| Exit | 17. Exit | Quits the program |
+
+1. Let's Start!
+
+First, run the script in your Python environment (requires NumPy installed):
+
+```python
+python matrix_module.py
+```
+
+You'll see a welcome message and the menu of functions. The tool is interactive—select options by number and follow prompts. Matrices are stored in a dictionary with labels (e.g., A, B, ...). For generated matrices, labels are auto-assigned (A starts at 0, then B, etc., up to AA, AB...).
+
+2. Creating Matrices
+
+Use menu options 1-5 to create matrices. For example, to input a matrix manually:
+
+- Select 1.
+- Enter name: A
+- Rows: 2, Columns: 2
+- Row 1: 1 2
+- Row 2: 3 4
+
+The tool validates input and stores it as a NumPy array. For random generation:
+
+- Select 2.
+- Rows: 3, Cols: 3, Low: 1, High: 5
+- Outputs a 3x3 matrix with integers 1-4, auto-labeled (e.g., B).
+
+Use option 6 to view all stored matrices at any time.
+
+3. Basic Operations
+
+Perform arithmetic on stored matrices. Shapes must match for addition/subtraction; columns of first must equal rows of second for multiplication.
+
+Example workflow:
+
+- Create A: [[1,2],[3,4]]
+- Create B: [[5,6],[7,8]]
+- Select 7 (addition): First: A, Second: B → Result: [[6,8],[10,12]]
+- Select 9 (multiplication): Left: A, Right: B → Result: [[19,22],[43,50]]
+
+Errors are handled gracefully (e.g., "Matrix dimensions are inconsistent").
+
+4. Advanced Computations
+
+For linear algebra tasks like inverse, determinant, rank, and eigenvalues.
+
+Example:
+
+- For matrix A: [[1,2],[3,4]] (det = -2.0)
+- Select 12: Name: A → Determinant: -2.0
+- Select 11: Name: A → Inverse: [[-2,1],[1.5,-0.5]]
+- Select 14: Name: A → Eigenvalues: [5.372, -0.372], Eigenvectors (columns).
+
+Only works on square matrices where applicable; checks for invertibility (det ≠ 0).
+
+5. Decompositions
+
+Supports LU (Doolittle without pivoting) and QR (classical Gram-Schmidt).
+
+Example for LU:
+
+- Matrix C: [[2,1,1],[4,-6,0],[-2,7,2]]
+- Select 15: Name: C
+- Outputs L and U matrices; fails if zero pivot.
+
+For QR:
+
+- Same matrix: Outputs Q (orthogonal) and R (upper triangular).
+
+These are manual implementations for educational purposes—use on suitable matrices to avoid failures (e.g., no dependent columns for QR).
+
+6. Managing Matrices and Labels
+
+Matrices are stored globally with user-provided or auto-generated labels (A, B, ..., Z, AA, etc.). Auto-labeling happens for generated matrices (options 2-5). You can overwrite by reusing names in input (option 1), but generated ones increment automatically.
+
+View all with option 6. No explicit "clear" but restarting the script resets storage.
+
+7. Example Workflows
+
+Here's a complete session example (simulated inputs):
+
+- Run the script.
+- Select 1: Name A, 2x2, Rows: [1 0], [0 1] (identity manually).
+- Select 2: 2x2 random (1-10), auto-labels B: e.g., [[3,7],[2,5]]
+- Select 7: A + B → [[4,7],[2,6]]
+- Select 10: Transpose B → [[3,2],[7,5]]
+- Select 11: Inverse B (if invertible).
+- Select 15: LU on B.
+- Select 17 to exit.
+
+Another advanced example:
+
+- Select 3: n=3 → Identity C: [[1,0,0],[0,1,0],[0,0,1]]
+- Select 13: Rank C → 3
+- Select 14: Eigen C → Values: [1,1,1], Vectors: identity.
+
+8. Notes and Supported Features
+
+- All operations use NumPy for accuracy; manual LU/QR for insight.
+- Handles floats/integers; prompts retry on input errors.
+- No graphical output—results printed to console.
+- Extendable: Add more operations by modifying the script.
+
+Supported matrix types: Any NumPy-compatible (rectangular arrays). For best results, use square matrices for inverses/dets/eigs/decomps.
+
+# Usage 5: Symbolic Computation with Symbolic_module
+This module provides basic symbolic computation capabilities, allowing users to perform algebraic manipulations, differentiation, and integration on symbolic expressions. Below are the main features and how to use them:
+- 使用 `Symbol('name')` 创建符号变量
+- 加减：`+`，`-`
+- 乘除：`*`，`/`
+- 幂运算：`x**n`（`n`是数字）
+- `Sin(x)` → 正弦函数 `sin(x)`
+- `Cos(x)` → 余弦函数 `cos(x)`
+- `Log(x)` → 自然对数 `ln(x)`
+- `Exp(x)` → 指数函数 `e**x`
+- `expand(expr)` 展开
+- `combine_like_terms(expr)` 合并同类项
+- `expr_to_str(expr)` 将表达式转换为可读字符串
+- `diff(expr, var)`: 对表达式 `expr` 关于变量 `var` 求偏导（支持：加法、乘法、幂函数、`sin/cos/ln/exp` 及其复合）
+- `integrate(expr, var)`: 计算 $\int exprdvar$（不带常数 +C）（多项式：$\int x**ndx=x**(n+1)/n+1$，$\int sinxdx=-cosx$，$\int cosxdx=sinx$，$\int 1/xdx=lnx$，$\int e**xdx=e**x$ $\int lnx dx=xlnx -x$）
