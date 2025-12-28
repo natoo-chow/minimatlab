@@ -202,7 +202,6 @@ def lu_matrix(name):
 
 def qr_decomposition(A):
     """Perform QR decomposition on matrix A (classic Gram-Schmidt)"""
-    import numpy as np
 
     A = np.array(A, dtype=float)
     m, n = A.shape
